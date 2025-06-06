@@ -2,5 +2,8 @@
   "dependencies": {
     "playwright": "^1.51.1",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
   }
 }
