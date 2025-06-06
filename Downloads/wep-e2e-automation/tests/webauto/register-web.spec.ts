@@ -1,7 +1,7 @@
 import { Browser, BrowserContext, chromium, expect, Page, test } from '@playwright/test';
 import LoginPage, { formLocator } from '../pages/registerpage';
 import excelTestData from '../../excelDetails.json';
-
+//test
 let browser: Browser;
 let context: BrowserContext;
 let page: Page;
