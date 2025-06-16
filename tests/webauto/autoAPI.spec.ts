@@ -34,7 +34,12 @@ test("TC_02_API_POST To All Products List",async()=>
     let allProducts=await requestvalue.post("productsList");
     const postAllproductlist= await allProducts.text();
     console.log(postAllproductlist);
-
+})
+test("TC_03_API_Get All Brands List List",async()=>
+{
+    let allProducts=await requestvalue.post("brandsList");
+    const getAllBrandslist= await allProducts.text();
+    console.log(getAllBrandslist);
 })
 
 });
