@@ -6,7 +6,6 @@ import { error } from 'console';
 let excelDataMap: Record<string, string> = {};
 let excelFilePath = excelTestData.LoginPage.ExcelWorkBook;
 let sheetName = excelTestData.LoginPage.ExcelWorkSheet;
-let formsheet = excelTestData.LoginPage.ExcelFormSheet;
 const dataMap: Record<string, string> = {};
 
 export const formLocator = {
@@ -29,17 +28,21 @@ export default class LoginPage {
     readonly newUserVisible:Locator;
     readonly signUpname: Locator;
     readonly signUpMail: Locator;
-    clickSignUp:Locator;
-    enterInfoUser:Locator;
-    radioGender:Locator;
-    idlocatior:Locator;
-    selectday:Locator;
-    selectmonth:Locator;
-    selectyear:Locator;
-    clickCreateAccount:Locator;
-    accountCreated:Locator;
-    clickContinue: Locator;
-    loggedinasaUser:Locator;
+    readonly clickSignUp:Locator;
+    readonly enterInfoUser:Locator;
+    readonly radioGender:Locator;
+    readonly idlocatior:Locator;
+    readonly selectday:Locator;
+    readonly selectmonth:Locator;
+    readonly selectyear:Locator;
+    readonly clickCreateAccount:Locator;
+    readonly accountCreated:Locator;
+    readonly clickContinue: Locator;
+    readonly loggedinasaUser:Locator;
+    readonly loginEmail:Locator;
+    loginPassword:Locator;
+    clickLoginCTA:Locator;
+    deleteAccount:Locator;
      
     constructor(page: Page) {
         this.page = page;
@@ -59,6 +62,11 @@ export default class LoginPage {
         this.accountCreated=page.locator('.col-sm-9 .text-center');
         this.clickContinue=page.locator('.pull-right .btn-primary');
         this.loggedinasaUser=page.locator('.shop-menu ul li:last-child');
+        this.loginEmail=page.locator('[data-qa="login-email"]');
+        this.loginPassword=page.locator("//input[@placeholder='Password']");
+        this.clickLoginCTA=page.locator("[data-qa='login-button']")
+        this.deleteAccount=page.locator('.shop-menu ul li .fa-trash-o')
+
     }
 
 
@@ -90,13 +98,16 @@ export default class LoginPage {
         return await this.homeVisible.nth(1).click();
     }
     
-    async signUpEnterUsername(UserName:string)
+async fillSignUpForm(UserName:string,EnterSignUpMail:string)
+{
+    await this.signUpname.fill(UserName);
+    await this.signUpMail.fill(EnterSignUpMail);
+}
+
+    async LoginEnterMail(LoginMail: string, Loginpasskey:string)
     {
-        return await this.signUpname.fill(UserName);
-    }
-    async SignUpEnterMail(EnterMailid: string)
-    {
-        await this.signUpMail.fill(EnterMailid);
+        await this.loginEmail.fill(LoginMail);
+        await this.loginPassword.fill(Loginpasskey)
     }
     async SubmitSignup()
     {

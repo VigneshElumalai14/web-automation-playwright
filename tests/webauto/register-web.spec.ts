@@ -11,19 +11,20 @@ let excelDataMap: Record<string, string> = {};
 const excelFilePath = excelTestData.LoginPage.ExcelWorkBook;
 const sheetName = excelTestData.LoginPage.ExcelWorkSheet;
 
-test.describe('Signup and Login Functionality', () => {
-  test.beforeAll(async () => {
-    browser = await chromium.launch();
-    context = await browser.newContext();
-    page = await context.newPage();
-    loginPage = new LoginPage(page);
-    excelDataMap = await loginPage.readExcelData(excelFilePath, sheetName);
-    await loginPage.gotoLoginPage();
-  });
+test.describe('Signup Functionality', () => {
 
-  test.afterAll(async () => {
-    await browser.close();
-  });
+test.beforeAll(async () => {
+  browser = await chromium.launch();
+  context = await browser.newContext();
+  page = await context.newPage();
+  loginPage = new LoginPage(page);
+  excelDataMap = await loginPage.readExcelData(excelFilePath, sheetName);
+  await loginPage.gotoLoginPage();
+});
+
+test.afterAll(async () => {
+  await browser.close();
+});
 
   test('TC_01_Verify Home Section is Visible', async () => {
     await expect(page).toHaveURL('/');
@@ -53,8 +54,7 @@ test.describe('Signup and Login Functionality', () => {
   });
 
   test('TC_04_Submit Signup Form', async () => {
-    await loginPage.signUpEnterUsername(excelDataMap['User Name']);
-    await loginPage.SignUpEnterMail(excelDataMap['User Mail Id']);
+    await loginPage.fillSignUpForm(excelDataMap['User Name'],excelDataMap['User Mail Id']);
     await loginPage.SubmitSignup();
     await expect.soft(loginPage.enterInfoUser.nth(0)).toHaveText(excelDataMap['User Details Header']);
   });
@@ -72,7 +72,8 @@ test.describe('Signup and Login Functionality', () => {
 
   test('TC_06_Create Account & Verify Account Created', async () => {
     await loginPage.clickCreateAccount.click();
-    expect.soft(await loginPage.accountCreated.textContent()).toBe(excelDataMap['Account Created']);
+    const accountText = await loginPage.accountCreated.textContent();
+    expect.soft(accountText?.trim()).toBe(excelDataMap['Account Created']);
     await loginPage.clickContinue.click();
   });
 
@@ -82,8 +83,10 @@ test.describe('Signup and Login Functionality', () => {
   });
 
   test('TC_08_Delete Account', async () => {
-    await page.locator('.shop-menu ul li .fa-trash-o').click();
-    expect.soft(await loginPage.accountCreated.textContent()).toBe(excelDataMap['Account Deleted']);
+    await loginPage.deleteAccount.click();
+    const deletedText = await loginPage.accountCreated.textContent();
+    expect.soft(deletedText?.trim()).toBe(excelDataMap['Account Deleted']);
     await loginPage.clickContinue.click();
   });
 });
+
